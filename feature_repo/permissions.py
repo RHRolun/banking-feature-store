@@ -33,14 +33,25 @@ from feast.permissions.policy import RoleBasedPolicy, GroupBasedPolicy, Namespac
 # dev_team_groups = ["dev-team", "developers"]
 # admin_groups = ["feast-admins", "platform-admins"]
 
-project_access_all_users = Permission(
+# project_access_all_users = Permission(
+#     name="all_resources",
+#     types=ALL_RESOURCE_TYPES,
+#     policy=GroupBasedPolicy(groups=[
+#         # Common group for all authenticated users
+#         "system:authenticated",  # For Kubernetes - all authenticated users
+#     ]),
+#     actions=[AuthzedAction.DESCRIBE] + READ,
+# )
+
+
+prod_namespaces = ["banking"]
+
+# pre_changed = Permission(name="entity_reader", types=ONLY_ENTITIES, policy=NamespaceBasedPolicy(namespaces=prod_namespaces), actions=[AuthzedAction.DESCRIBE] + READ)
+all_resources = Permission(
     name="all_resources",
     types=ALL_RESOURCE_TYPES,
-    policy=GroupBasedPolicy(groups=[
-        # Common group for all authenticated users
-        "system:authenticated",  # For Kubernetes - all authenticated users
-    ]),
-    actions=[AuthzedAction.DESCRIBE] + READ,
+    policy=NamespaceBasedPolicy(namespaces=prod_namespaces),
+    actions=[AuthzedAction.DESCRIBE] + READ
 )
 
 # only_ds = Permission(name="entity_reader", types=ONLY_DS, policy=NamespaceBasedPolicy(namespaces=[prod_namespaces]), actions=[AuthzedAction.DESCRIBE] + READ)
